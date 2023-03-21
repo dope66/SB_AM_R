@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.dto.UserJoinRequest;
+import com.example.demo.domain.dto.UserDto;
 import com.example.demo.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,9 +33,9 @@ class UserControllerTest {
         String userName = "HW";
         String password= "1234";
 
-        mockMvc.perform(get("/usr/member/join")
+        mockMvc.perform(post("/usr/member/join")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName,password))))
+                .content(objectMapper.writeValueAsBytes(new UserDto(userName,password))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -47,9 +46,9 @@ class UserControllerTest {
         String userName = "HW";
         String password= "1234";
 
-        mockMvc.perform(get("/usr/member/join")
+        mockMvc.perform(post("/usr/member/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName,password))))
+                        .content(objectMapper.writeValueAsBytes(new UserDto(userName,password))))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
