@@ -1,34 +1,32 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.User;
 import com.example.demo.domain.dto.UserDto;
-import com.example.demo.service.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import com.example.demo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
-@RestController
-@RequiredArgsConstructor   //서비스 추가후 생성
-@RequestMapping("/usr/member")
+
+
+@Controller
 public class UserController {
-    private final UserService userService;
-    @PostMapping("/login")
-    public ResponseEntity<String> login(){
-        return ResponseEntity.ok().body("token");
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @GetMapping("/signup")
+    public String signupForm(Model model) {
+        model.addAttribute("userDto", new UserDto());
+        return "signup";
     }
 
-//    @PostMapping("/join")
-//    public  ResponseEntity<?> join(@RequestBody UserJoinRequest dto){
-//        userService.join(dto.getUserName(),dto.getPassword());
-//        return ResponseEntity.ok().body("회원가입완료");
-//    }
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
-        try {
-            userService.registerUser(userDto);
-            return ResponseEntity.ok("SUCCESS");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @PostMapping("/signup")
+    public String signupSubmit(UserDto userDto) {
+        User user = new User(userDto.getUserName(), userDto.getPassword());
+        userRepository.save(user);
+        return "redirect:/";
     }
-
 }
