@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,16 +23,15 @@ import java.util.List;
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
     private final UserService userService;
+    @Value("${jwt.secretKey}")
     private final String secretKey;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("authorization : {}", authorization);
-
-        // token이 없으면 block
+         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        System.out.println(authorization);
         if (authorization == null || !authorization.startsWith("Bearer ")) {
-            log.error("authorization을 잘못 보냈습니다. ");
+//            log.error("authorization을 잘못 보냈습니다. ");
             filterChain.doFilter(request, response);
             return;
         }
@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // 토큰 만료 되었는지 여부 체크
         if(JwtUtil.isExpired(token,secretKey)){
-            log.error("토큰 이 만료 되었습니다.");
+//            log.error("토큰 이 만료 되었습니다.");
             filterChain.doFilter(request, response);
             return;
 
