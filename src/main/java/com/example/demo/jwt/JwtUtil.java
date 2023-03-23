@@ -34,7 +34,6 @@ public class JwtUtil {
     public static String createJwt(String username,String secretKey,Long expiredMs){
         Claims claims = Jwts.claims();
         claims.put("username",username);
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
