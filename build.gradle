@@ -26,6 +26,10 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+// Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+	compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 
 //	jpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -34,14 +38,7 @@ dependencies {
 	implementation 'mysql:mysql-connector-java'
 	implementation 'mysql:mysql-connector-java:8.0.28'
 
-//	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
-// Security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-//	implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.4'
 
-	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-	compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
-//	implementation 'org.springframework.security:spring-security-crypto'
 
 //	lombok
 	implementation 'org.projectlombok:lombok'
@@ -53,7 +50,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-
+//	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+//	implementation 'org.springframework.security:spring-security-crypto'
+	//	implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.4'
 }
 
 tasks.named('test') {

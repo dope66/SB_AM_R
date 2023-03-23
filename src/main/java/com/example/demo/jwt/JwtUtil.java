@@ -11,9 +11,19 @@ import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
+    public static String getUsername(String token, String secretKey){
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+                .getBody().get("username",String.class);
+
+    }
+
+    public static boolean isExpired(String token,String secretKey){
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+                .getBody().getExpiration().before(new Date());
+    }
     private final Key key;
 
-    public JwtUtil(@Value("${jwt.secret}") String secretKey) {
+    public JwtUtil(@Value("${jwt.secretKey}") String secretKey) {
         byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
         this.key = Keys.hmacShaKeyFor(secretByteKey);
     }

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.dto.UserDTO;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -9,8 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,9 +33,9 @@ class UserControllerTest {
         String userName = "HW";
         String password= "1234";
 
-        mockMvc.perform(post("/usr/member/join")
+        mockMvc.perform(post("/api/v1/user/join")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserDto(userName,password))))
+                .content(objectMapper.writeValueAsBytes(new UserDTO(userName,password))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -45,9 +46,9 @@ class UserControllerTest {
         String userName = "HW";
         String password= "1234";
 
-        mockMvc.perform(post("/usr/member/join")
+        mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserDto(userName,password))))
+                        .content(objectMapper.writeValueAsBytes(new UserDTO(userName,password))))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
