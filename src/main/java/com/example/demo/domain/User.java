@@ -1,30 +1,22 @@
 package com.example.demo.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
-@Builder
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class User {
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "user_name", unique = true, nullable = false, length = 50)
-    private String userName;
-
-    @Column(name = "password", nullable = false)
+    private Long id ;
+    private String username;
     private String password;
 
-    public User(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
-
-    // ...
 }

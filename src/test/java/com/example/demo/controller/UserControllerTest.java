@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.dto.UserDto;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;

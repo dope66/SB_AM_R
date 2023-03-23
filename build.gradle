@@ -19,20 +19,41 @@ repositories {
 }
 
 dependencies {
+// web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+//	 jwt
+	implementation('io.jsonwebtoken:jjwt:0.9.1')
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+//	jpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+// mysql
 	implementation 'mysql:mysql-connector-java'
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
-//	implementation 'org.springframework.security:spring-security-crypto'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'mysql:mysql-connector-java:8.0.27'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'mysql:mysql-connector-java:8.0.28'
+
+//	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+// Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.4'
+
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 	compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+//	implementation 'org.springframework.security:spring-security-crypto'
+
+//	lombok
+	implementation 'org.projectlombok:lombok'
+	annotationProcessor('org.projectlombok:lombok')
+	annotationProcessor 'org.projectlombok:lombok'
+//	devTool
+	compileOnly("org.springframework.boot:spring-boot-devtools")
+//	Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+
 }
 
 tasks.named('test') {

@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/usr/member/reviews")
+@RequestMapping("/api/v1/user")
 public class ReviewController {
-    @PostMapping
+    @PostMapping("/reviews")
     public ResponseEntity<String> writeReview(){
         return ResponseEntity.ok().body("등록완료");
     }
