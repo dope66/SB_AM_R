@@ -19,23 +19,24 @@ public class AuthenticationConfig {
 
     private final UserService userService;
 
-    @Value("{jwt.secretKey}")
+    // 여기에 값을 안가져와서 모든 secretKey의 value가 {jwt.secretKey} 되었잖아 ㅋㅋㅋㅋ
+    @Value("${jwt.secretKey}")
     private String secretKey;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .httpBasic().disable()
                 .csrf().disable()
                 .cors().and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/user/login","/api/v1/user/join").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/**").authenticated()
+                .requestMatchers("/api/v1/user/login", "/api/v1/user/join").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/**").authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt 사용하는 경우 씀
                 .and()
-                .addFilterBefore(new JwtFilter(userService,secretKey), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }
