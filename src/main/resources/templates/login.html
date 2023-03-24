@@ -1,15 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-</head>
+
 <body>
 <h1>Login</h1>
-<form method="POST" action="/api/v1/user/login">
-    <input type="text" name="username">
-    <input type="password" name="password">
-    <button type="submit">로그인</button>
+
+<div th:if="${error}" style="color: red;">Invalid username or password</div>
+<form action="/api/v1/user/login" method="post">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required autofocus/>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required/>
+    </div>
+    <div>
+        <button id="loginBtn" type="submit">Login</button>
+    </div>
 </form>
+
 </body>
 </html>
