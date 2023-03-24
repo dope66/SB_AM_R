@@ -30,8 +30,8 @@ public class AuthenticationConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/user/login", "/api/v1/user/join").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/**").authenticated()
+                .requestMatchers("/api/v1/user/login", "/api/v1/user/join","/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/apiv/v1/user/member").authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt 사용하는 경우 씀

@@ -6,12 +6,14 @@ import com.example.demo.exception.ErrorCode;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
@@ -20,11 +22,17 @@ public class UserService {
     private final Long expiredMs =60 * 60 * 24 * 30l;
 
     public String login(String username, String password) {
-
+        // username이 없을 경우
+        User selectedUser = userRepository.findByUsername(username)
+                .orElseThrow(()->new AppException(ErrorCode.USERNAME_NOT_FOUND,username +"이 없습니다."));
+        // password 틀림
+        if(!encoder.matches(password,selectedUser.getPassword())){
+            throw new AppException(ErrorCode.INVALID_PASSWORD,"Password를 잘못 입력 하였습니다.");
+        }
         return JwtUtil.createJwt(username, secretKey, expiredMs);
     }
 
-    public String join(String username, String password){
+    public void join(String username, String password){
         // 중복 체크 (현재 username);
         userRepository.findByUsername(username)
                 .ifPresent(user ->{
@@ -36,7 +44,5 @@ public class UserService {
                 .password(encoder.encode(password))
                         .build();
         userRepository.save(user);
-
-        return "Success";
     }
 }
