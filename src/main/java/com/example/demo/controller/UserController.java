@@ -1,35 +1,56 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.LoginRequest;
-import com.example.demo.domain.dto.UserDTO;
-import com.example.demo.service.UserService;
+import com.example.demo.domain.User;
+import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@RestController
-@RequestMapping("/api/v1/user")
+@Controller
 @RequiredArgsConstructor
 public class UserController {
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    UserRepository userRepository;
 
-    private final UserService userService;
-    @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody UserDTO userDTO){
-        userService.join(userDTO.getUsername(),userDTO.getPassword());
-        return ResponseEntity.ok().body("회원가입 성공했습니다.");
-
+    @GetMapping("/")
+    public String home(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            model.addAttribute("message", "로그인이 필요합니다.");
+        } else {
+            String currentUserName = authentication.getName();
+            model.addAttribute("username", currentUserName);
+        }
+        return "home";
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest dto){
-        return ResponseEntity.ok().body(userService.login(dto.getUsername(),""));
-
+    @GetMapping("/join")
+    public String join(Model model) {
+        return "join";
     }
 
+    @GetMapping("/login")
+    public String login(Model model) {
+        return "login";
+    }
+
+    @PostMapping("/joinProc")
+    public String joinProc(User user) {
+        String rawPassword = user.getPassword();
+        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+        user.setPassword(encPassword);
+        userRepository.save(user);
+        return "redirect:/";
+    }
 
 }
