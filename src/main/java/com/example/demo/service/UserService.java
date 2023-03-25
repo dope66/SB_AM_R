@@ -1,42 +1,33 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.User;
-import com.example.demo.exception.AppException;
-import com.example.demo.exception.ErrorCode;
-import com.example.demo.jwt.JwtUtil;
 import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder;
-    @Value("${jwt.secretKey}")
-    private String secretKey;
-    private final Long expiredMs =60 * 60 * 24 * 30l;
+@Slf4j
+public class UserService implements UserDetailsService {
 
-    public String login(String username, String password) {
-
-        return JwtUtil.createJwt(username, secretKey, expiredMs);
+    @Autowired
+    UserRepository userRepository;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) { // isPresent() 메소드 사용
+            log.info("User found with username: {}", user.get().getUsername());
+        } else {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return user.map(UserDetail::new).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public String join(String username, String password){
-        // 중복 체크 (현재 username);
-        userRepository.findByUsername(username)
-                .ifPresent(user ->{
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, username + "는 이미 존재합니다");
-                } );
-        //저장
-        User user= User.builder()
-                .username(username)
-                .password(encoder.encode(password))
-                        .build();
-        userRepository.save(user);
-
-        return "Success";
-    }
 }
