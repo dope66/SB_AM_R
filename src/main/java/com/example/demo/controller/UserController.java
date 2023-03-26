@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Optional;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -61,6 +63,13 @@ public class UserController {
             }
             return "join"; // 에러 메시지와 함께 다시 회원가입 페이지로 돌아갑니다.
         }
+
+        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+        if (existingUser != null) {
+            model.addAttribute("usernameError", "이미 사용중인 이름입니다.");
+            return "join";
+        }
+
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
