@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.service.UserService;
+import com.example.demo.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,11 +20,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     @Autowired
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-    private final UserService userService;
+    private final UserDetailService userDetailService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+        auth.userDetailsService(userDetailService);
     }
 
     @Bean

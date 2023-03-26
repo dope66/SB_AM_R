@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.dto.UserDTO;
-import com.example.demo.service.UserService;
+import com.example.demo.service.UserDetailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class UserControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    UserService userService;
+    UserDetailService userDetailService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -31,11 +31,11 @@ class UserControllerTest {
     @DisplayName("회원 가입 성공")
     void join() throws Exception {
         String userName = "HW";
-        String password= "1234";
+        String password = "1234";
 
         mockMvc.perform(post("/api/v1/user/join")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserDTO(userName,password))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserDTO(userName, password))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -44,11 +44,11 @@ class UserControllerTest {
     @DisplayName("회원 가입 실패 - 아이디 중복")
     void join_fail() throws Exception {
         String userName = "HW";
-        String password= "1234";
+        String password = "1234";
 
         mockMvc.perform(post("/api/v1/user/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserDTO(userName,password))))
+                        .content(objectMapper.writeValueAsBytes(new UserDTO(userName, password))))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }

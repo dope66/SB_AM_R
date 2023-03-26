@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.service.UserService;
+import com.example.demo.service.UserDetailService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,10 +15,10 @@ import java.io.IOException;
 @Component
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-    private final UserService userService;
+    private final UserDetailService userDetailService;
 
-    public CustomAuthenticationFailureHandler(UserService userService) {
-        this.userService = userService;
+    public CustomAuthenticationFailureHandler(UserDetailService userDetailService) {
+        this.userDetailService = userDetailService;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             String username = request.getParameter("username");
             UserDetails userDetails;
             try {
-                userDetails = userService.loadUserByUsername(username);
+                userDetails = userDetailService.loadUserByUsername(username);
             } catch (UsernameNotFoundException e) {
                 errorMessage = "아이디를 확인해주세요.";
                 request.getSession().setAttribute("errorMessage", errorMessage);
