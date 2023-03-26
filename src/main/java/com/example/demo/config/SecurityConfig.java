@@ -1,13 +1,14 @@
 package com.example.demo.config;
 
+import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -15,19 +16,29 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+// 인증 방식, 접근 권한, 로그인 페이지 등을 설정
 public class SecurityConfig {
+    @Autowired
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final UserService userService;
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService);
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-// configure Deprecated ..
+
+    // configure Deprecated ..
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
+                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
@@ -35,12 +46,10 @@ public class SecurityConfig {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .loginPage("/login")
+                .failureUrl("/login?error=true")
+                .failureHandler(customAuthenticationFailureHandler)
                 .loginProcessingUrl("/loginProc")
                 .defaultSuccessUrl("/")
-//                .and()
-//                .anonymous()
-//                .principal("guestUser")
-//                .authorities("ROLE_ANONYMOUS")
                 .and()
                 .logout()
                 // logout url
@@ -49,13 +58,14 @@ public class SecurityConfig {
                 .invalidateHttpSession(true)
                 .and()
                 .build();
+
     }
+
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-//         hmm...
-        return (web) -> web.ignoring();
-
+        return (web) -> {
+        };
     }
 
 

@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+</head>
 
 <body>
 <h1>Login</h1>
+
+<div class="alert alert-danger" th:if="${errorMessage}">
+    <p th:text="${errorMessage}"></p>
+</div>
+
 <form action="/loginProc" method="post">
     <label>
         <input name="username" type="text"/>

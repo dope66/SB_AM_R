@@ -3,17 +3,18 @@ package com.example.demo.service;
 import com.example.demo.domain.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 @Data
+//Spring Security에서 인증에 필요한 사용자 정보를 담고 있는 인터페이스
 public class UserDetail implements UserDetails {
 
     private final User user;
 
-    public UserDetail(User user){
+    public UserDetail(User user) {
         this.user = user;
     }
 
@@ -23,7 +24,7 @@ public class UserDetail implements UserDetails {
         collect.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return  user.getRole();
+                return user.getRole();
             }
         });
         return collect;

@@ -4,6 +4,68 @@
     <meta charset="UTF-8">
     <title>회원가입 페이지</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            background-color: #f8f8f8;
+        }
+
+        h1 {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 20px auto;
+            width: 80%;
+        }
+
+        form {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
         .error-message {
             color: red;
         }
@@ -11,21 +73,21 @@
 </head>
 <body>
 <h1>회원가입 페이지</h1>
-<hr/>
+<hr>
 <form action="/joinProc" method="post">
     <div>
         <label for="username">Username</label>
-        <input id="username" name="username" th:value="${user.username}" type="text"/>
+        <input id="username" name="username" th:value="${user.username}" type="text">
         <span class="error-message" th:if="${usernameError} != null" th:text="${usernameError}"></span>
     </div>
     <div>
         <label for="password">Password</label>
-        <input id="password" name="password" type="password"/>
+        <input id="password" name="password" type="password">
         <span class="error-message" th:if="${passwordError} != null" th:text="${passwordError}"></span>
     </div>
     <div>
         <label for="email">Email</label>
-        <input id="email" name="email" th:value="${user.email}" type="email"/>
+        <input id="email" name="email" th:value="${user.email}" type="email">
     </div>
     <button>회원가입</button>
 </form>

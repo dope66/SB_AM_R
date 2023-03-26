@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+//사용자 아이디, 비밀번호, 권한 등의 정보를 담고 있습니다. UserDetailsService는 User Entity를 통해 사용자 정보를 가져옴
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
