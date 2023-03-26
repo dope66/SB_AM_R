@@ -3,24 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-<h1>Login</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <h1 class="text-center mb-4">Login</h1>
 
-<div class="alert alert-danger" th:if="${errorMessage}">
-    <p th:text="${errorMessage}"></p>
+            <form action="/loginProc" method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input class="form-control" id="username" name="username" type="text">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input class="form-control" id="password" name="password" type="password">
+                </div>
+
+                <button class="btn btn-primary btn-block">Login</button>
+
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger mt-3" role="alert">
+                        아이디 또는 비밀번호가 일치하지 않습니다.
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-<form action="/loginProc" method="post">
-    <label>
-        <input name="username" type="text"/>
-    </label>
-    <label>
-        <input name="password" type="password"/>
-    </label>
-    <button>로그인</button>
-</form>
-
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
