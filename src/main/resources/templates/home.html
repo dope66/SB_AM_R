@@ -1,24 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
-<h1>MAIN PAGE</h1>
-<p th:text="${username}"></p>
-<!-- 로그인되지 않은 사용자에게 보여줄 버튼 -->
+<html layout:decorate="layout/default_layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block layout:fragment="content">
+    <h1>MAIN PAGE</h1>
 
-    <div th:if="${message}">
-        <a th:href="@{/login}" class="btn btn-primary">로그인</a>
-        <a th:href="@{/join}" class="btn btn-secondary">회원가입</a>
-    </div>
-
-<!-- 로그인된 사용자에게 보여줄 버튼 -->
-<div th:if="${username}!=null">
-    <form th:action="@{/logout}" method="post">
-        <button type="submit" class="btn btn-primary">로그아웃</button>
-    </form>
-</div>
-
-</body>
+</th:block>
 </html>
+
+
