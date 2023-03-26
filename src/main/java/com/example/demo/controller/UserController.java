@@ -25,11 +25,12 @@ public class UserController {
     @GetMapping("/")
     public String home(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
+        if (authentication == null || authentication.getName().equals("anonymousUser")) {
             model.addAttribute("message", "로그인이 필요합니다.");
         } else {
             String currentUserName = authentication.getName();
             model.addAttribute("username", currentUserName);
+
         }
         return "home";
     }

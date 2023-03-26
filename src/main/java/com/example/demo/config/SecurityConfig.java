@@ -25,28 +25,10 @@ public class SecurityConfig {
 // configure Deprecated ..
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity.formLogin()
-//                .loginPage("/api/v1/user/login")
-//                .usernameParameter("username")
-//                .passwordParameter("password")
-//                .loginProcessingUrl("/login")
-//                .defaultSuccessUrl("/");
-//        return httpSecurity
-//                .httpBasic().disable()
-//                .csrf().disable()
-//                .cors().and()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/api/v1/user/login", "/api/v1/user/join","/**","/signin-check").permitAll()
-//                .requestMatchers(HttpMethod.POST, "/api/v1/user/member").authenticated()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt 사용하는 경우 씀
-//                .and().build();
-//
         return httpSecurity.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/user/**").authenticated()
-                .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
+                .requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
@@ -55,11 +37,14 @@ public class SecurityConfig {
                 .loginPage("/login")
                 .loginProcessingUrl("/loginProc")
                 .defaultSuccessUrl("/")
+//                .and()
+//                .anonymous()
+//                .principal("guestUser")
+//                .authorities("ROLE_ANONYMOUS")
                 .and()
                 .logout()
                 // logout url
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessUrl("/logoutsucess") //로그아웃이 되는지 확인
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .and()
