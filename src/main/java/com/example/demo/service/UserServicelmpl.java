@@ -6,7 +6,11 @@ import com.example.demo.exception.UsernameAlreadyExistsException;
 import com.example.demo.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -37,4 +41,17 @@ public class UserServicelmpl implements UserService {
 
         return userRepository.save(newUser);
     }
+
+    @Override
+    public Map<String, String> validateHandler(BindingResult bindingResult) {
+        Map<String, String> validateResult = new HashMap<>();
+
+        for (FieldError error : bindingResult.getFieldErrors()) {
+            String validKeyName = "valid_" + error.getField();
+            validateResult.put(validKeyName, error.getDefaultMessage());
+        }
+
+        return validateResult;
+    }
+
 }

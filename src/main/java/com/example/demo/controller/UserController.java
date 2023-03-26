@@ -18,6 +18,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Map;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -64,26 +66,22 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             // 입력값 유지
             model.addAttribute("user", userDTO);
-            if (bindingResult.getFieldError("username") != null) {
-                model.addAttribute("usernameError", "사용자의 이름은 최소 6자리 이상이어야 합니다.");
-            }
-            if (bindingResult.getFieldError("password") != null) {
-                model.addAttribute("passwordError", "비밀번호는 최소 8자리 이상이어야 합니다.");
+            Map<String, String> validateResult = userService.validateHandler(bindingResult);
+            for (String key : validateResult.keySet()) {
+                // ex) model.addAtrribute("valid_id", "아이디는 필수 입력사항 입니다.")
+                model.addAttribute(key, validateResult.get(key));
             }
             return "join";
         }
         try {
-            // 입력값이 유효한 경우 새로운 사용자 등록
+            //사용자 등록
             User newUser = userService.registerNewUser(userDTO);
-            // 등록된 사용자의 이메일 출력
-            System.out.println(newUser.getEmail());
-            // 메인 페이지로 이동
             return "redirect:/";
         } catch (UsernameAlreadyExistsException e) {
+            model.addAttribute("valid_username", "이미 사용중인 아이디입니다.");
             model.addAttribute("user", userDTO);
-            model.addAttribute("usernameError", "이미 존재하는 사용자 이름입니다.");
             return "join";
         }
-    }
 
+    }
 }
