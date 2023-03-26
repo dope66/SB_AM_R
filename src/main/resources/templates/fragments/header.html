@@ -30,10 +30,11 @@
                                            href="/usr/article/list?boardId=1"><span>NOTICE</span></a></li>
             <li class="hover:underline"><a class="h-full px-3 flex items-center"
                                            href="/usr/article/list?boardId=2"><span>FREE</span></a></li>
-            <li class="hover:underline" th:if="${message}"><a class="h-full px-3 flex items-center"
-                                                              href="/login"><span>LOGIN</span></a></li>
-            <li class="hover:underline" th:if="${message}"><a class="h-full px-3 flex items-center"
-                                                              href="/join"><span>JOIN</span></a></li>
+
+            <li class="hover:underline" th:if="${username}==null"><a class="h-full px-3 flex items-center"
+                                                                     href="/join"><span>JOIN</span></a></li>
+            <li class="hover:underline" th:if="${username}==null"><a class="h-full px-3 flex items-center"
+                                                                     href="/login"><span>LOGIN</span></a></li>
             <li class="hover:underline" th:if="${username}!=null">
                 <a class="h-full px-3 flex items-center" href="#"
                    onclick="document.getElementById('logoutForm').submit()">
@@ -41,6 +42,11 @@
                 </a>
                 <form id="logoutForm" method="post" th:action="@{/logout}"></form>
             </li>
+            <li class="hover:underline" th:if="${username}!=null">
+                <a class="h-full px-3 flex items-center"
+                   href="/user/mypage"><span>MYPAGE</span></a>
+            </li>
+
         </ul>
     </div>
 </th:block>
