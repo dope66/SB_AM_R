@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="headerFragment">
+    <head>
+        <title>커뮤니티 |</title>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <script src="/js/jquery-3.6.0.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <link href="/favicon.ico" rel="shortcut icon"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" rel="stylesheet"/>
+        <!-- 데이지 UI -->
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@2.31.0/dist/full.css" rel="stylesheet" type="text/css"/>
+        <!-- 제이쿼리 불러오기 -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <!-- 폰트어썸 불러오기 -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet"/>
+        <!-- 커스텀 공통 CSS -->
+        <link href="/resource/common.css" rel="stylesheet"/>
+        <!-- 공통 JS -->
+        <script defer="defer" src="/resource/common.js"></script>
+    </head>
+    <div class="h-20 flex container mx-auto text-3xl">
+        <a class="h-full px-3 flex items-center" href="/"><span>로고</span></a>
+        <div class="flex-grow"></div>
+        <ul class="flex">
+            <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/"><span>HOME</span></a></li>
+            <li class="hover:underline"><a class="h-full px-3 flex items-center"
+                                           href="/usr/article/list?boardId=1"><span>NOTICE</span></a></li>
+            <li class="hover:underline"><a class="h-full px-3 flex items-center"
+                                           href="/usr/article/list?boardId=2"><span>FREE</span></a></li>
+            <li class="hover:underline" th:if="${message}"><a class="h-full px-3 flex items-center"
+                                                              href="/login"><span>LOGIN</span></a></li>
+            <li class="hover:underline" th:if="${message}"><a class="h-full px-3 flex items-center"
+                                                              href="/join"><span>JOIN</span></a></li>
+            <li class="hover:underline" th:if="${username}!=null">
+                <a class="h-full px-3 flex items-center" href="#"
+                   onclick="document.getElementById('logoutForm').submit()">
+                    <span>LOGOUT</span>
+                </a>
+                <form id="logoutForm" method="post" th:action="@{/logout}"></form>
+            </li>
+        </ul>
+    </div>
+</th:block>
+</html>
